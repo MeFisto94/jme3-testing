@@ -1,0 +1,17 @@
+if (!hasProperty('mainClass')) {
+    ext.mainClass = ''
+}
+
+dependencies {
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+    testImplementation project(':harness')
+    testImplementation project(':tests')
+    testRuntime 'org.jmonkeyengine:jme3-desktop:3.3.0-beta1'
+    testRuntime 'org.jmonkeyengine:jme3-lwjgl:3.3.0-beta1'
+}
+
+test {
+    //forkEvery = 1 // Restart the JVM for every Test to not have side effects.
+    useJUnitPlatform()
+}

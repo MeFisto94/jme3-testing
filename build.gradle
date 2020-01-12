@@ -1,0 +1,9 @@
+plugins {
+    id 'idea'
+}
+
+apply from: 'common.gradle'
+
+subprojects {
+    apply from: rootProject.file('common.gradle')
+}

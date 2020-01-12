@@ -1,0 +1,6 @@
+rootProject.name = 'jme3-testing'
+
+include 'harness'
+include 'tests'
+include 'tests-lwjgl3'
+include 'tests-lwjgl2'
