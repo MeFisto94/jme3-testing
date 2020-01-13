@@ -1,24 +1,40 @@
 package com.github.MeFisto94.jme3_testing.harness;
 
 import com.jme3.app.LegacyApplication;
+import com.jme3.app.state.AppState;
 import com.jme3.scene.Node;
 import com.jme3.system.JmeContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
+import org.opentest4j.AssertionFailedError;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 
 public class LegacyTestApplication extends LegacyApplication {
     protected Node rootNode;
+    private static final Logger log = Logger.getLogger(LegacyTestApplication.class.getName());
 
     // State variables to monitor the application
     protected AtomicBoolean fullyLoaded = new AtomicBoolean();
     protected AtomicBoolean stopped = new AtomicBoolean();
 
+    public LegacyTestApplication(AppState... initialStates) {
+        super(initialStates);
+        setPauseOnLostFocus(false);
+    }
+
     @Override
     public void start(JmeContext.Type contextType, boolean waitFor) {
         Thread.setDefaultUncaughtExceptionHandler(
-                (t, e) -> handleError("[" + t.getName() + "]: " + e.getLocalizedMessage(), e)
+            (t, e) -> {
+                if (e instanceof AssertionFailedError) {
+                    e.printStackTrace(); // @TODO: Rethrowing doesn't work here, but that's the only thing causing JUnit to fail
+                    throw (AssertionFailedError)e;
+                } else {
+                    handleError("[" + t.getName() + "]: " + e.getLocalizedMessage(), e);
+                }
+            }
         );
 
         super.start(contextType, waitFor);
@@ -26,24 +42,19 @@ public class LegacyTestApplication extends LegacyApplication {
 
     @Override
     public void stop(boolean waitFor) {
-        if (!waitFor) {
-            throw new IllegalArgumentException("Always call stop(true), because otherwise the next test might fail to initialize");
-        }
-
-        super.stop(true);
+        super.stop(waitFor);
         stopped.set(true);
     }
 
     @Override
     public void handleError(String errMsg, Throwable t) {
-        // @TODO: Could the test succeed, because the blocking start() is finished and then Assertions is called when the test is already done?
-        try {
-            //stop(true); //@TODO: I think the tests will already stop the application in the after.
-        } catch (Exception ex) {
-            System.err.println("Exception during Application#stop, swallowed in handleError as this is most likely a NullPointerException because context is null.");
-            ex.printStackTrace();
+        //@TODO: Thanks to the custom exception handler, exceptions may pass the test.
+        if (t instanceof AssertionFailedError) {
+            t.printStackTrace();
+            throw (AssertionFailedError)t; // @TODO: Rethrowing doesn't work here, but that's the only thing causing JUnit to fail
+        } else {
+            Assertions.fail(errMsg, t);
         }
-        Assertions.fail(errMsg, t);
     }
 
     @Override
@@ -68,6 +79,10 @@ public class LegacyTestApplication extends LegacyApplication {
 
     public AtomicBoolean getFullyLoaded() {
         return fullyLoaded;
+    }
+
+    public AtomicBoolean getStopped() {
+        return stopped;
     }
 
     /**

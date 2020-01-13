@@ -19,13 +19,6 @@ public class TestTestHarness {
     }
 
     @Test
-    void testStopFalse() {
-        LegacyTestApplication lta = new LegacyTestApplication();
-        Assertions.assertThrows(IllegalArgumentException.class, lta::stop,
-                "Always call stop(true), because otherwise the next test might fail to initialize");
-    }
-
-    @Test
     void testProvocateNPE() {
         LegacyTestApplication lta = new LegacyTestApplication();
         lta.start(true);

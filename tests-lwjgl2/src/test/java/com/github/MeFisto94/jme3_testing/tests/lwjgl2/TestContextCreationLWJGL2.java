@@ -1,8 +1,12 @@
 package com.github.MeFisto94.jme3_testing.tests.lwjgl2;
 
 import com.github.MeFisto94.jme3_testing.tests.lwjgl.TestContextCreation;
+import com.jme3.system.lwjgl.LwjglAbstractDisplay;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This tests ensure that jme at least boots up for a few frames and closes again.
@@ -10,6 +14,11 @@ import org.junit.jupiter.api.Test;
  * @author MeFisto94
  */
 public class TestContextCreationLWJGL2 extends TestContextCreation {
+    private static final Logger logger = Logger.getLogger(LwjglAbstractDisplay.class.getName());
+
+    static {
+        logger.setLevel(Level.ALL);
+    }
 
     @Override
     @Test

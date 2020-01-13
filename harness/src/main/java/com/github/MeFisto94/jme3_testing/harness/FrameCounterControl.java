@@ -27,7 +27,7 @@ public class FrameCounterControl extends AbstractControl {
             frames.incrementAndGet();
         } else {
             if (frames.incrementAndGet() > stopFrames) {
-                app.stop(true);
+                app.stop(false); // MUST NOT PASS TRUE HERE
             }
         }
     }

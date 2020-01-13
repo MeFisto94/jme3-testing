@@ -41,16 +41,16 @@ public class SimpleTestApplication extends SimpleApplication {
 
     @Override
     public void stop(boolean waitFor) {
-        if (!waitFor) {
-            throw new IllegalArgumentException("Always call stop(true), because otherwise the next test might fail to initialize");
-        }
-
+        super.stop(waitFor);
         stopped.set(true);
-        super.stop(true);
     }
 
     public AtomicBoolean getFullyLoaded() {
         return fullyLoaded;
+    }
+
+    public AtomicBoolean getStopped() {
+        return stopped;
     }
 
     @Override
@@ -120,7 +120,7 @@ public class SimpleTestApplication extends SimpleApplication {
         return () -> {
             while (!this.stopped.get()) {
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }

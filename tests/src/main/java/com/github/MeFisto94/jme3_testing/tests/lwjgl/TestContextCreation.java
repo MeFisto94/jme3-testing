@@ -25,14 +25,25 @@ import java.time.Duration;
  *
  * @author MeFisto94
  */
-public class TestContextCreation {
+public abstract class TestContextCreation {
     Application app;
 
     @AfterEach
     protected void stop() {
         if (app != null) {
             // If an Exception fired, ensure disposal.
+            if (app instanceof LegacyTestApplication) {
+                if (((LegacyTestApplication) app).getStopped().get()) {
+                    app = null;
+                    return;
+                } else if (((SimpleTestApplication) app).getStopped().get()) {
+                    app = null;
+                    return;
+                }
+            }
+
             app.stop(true);
+            app = null;
         }
     }
 
@@ -63,7 +74,7 @@ public class TestContextCreation {
     protected void testStopWaitForLegacy() {
         LegacyTestApplication lta = new LegacyTestApplication();
         app = lta;
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(3L), () -> lta.start(false));
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(3L), () -> lta.start(true));
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10L), () -> lta.stop(true));
     }
 
@@ -73,7 +84,7 @@ public class TestContextCreation {
     protected void testStopWaitForSimple() {
         SimpleTestApplication sta = new SimpleTestApplication();
         app = sta;
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(3L), () -> sta.start(false));
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(3L), () -> sta.start(true));
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10L), () -> sta.stop(true));
     }
 
@@ -89,17 +100,15 @@ public class TestContextCreation {
 
     protected void test5FramesLegacy() {
         LegacyTestApplication lta = new LegacyTestApplication();
-        app = lta;
-        app.enqueue(() -> lta.stopAfter(5L)); // As said, has to be done that way because start can be blocking
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10L), () -> app.start(true)); // for lwjgl3
+        lta.enqueue(() -> lta.stopAfter(5L)); // As said, has to be done that way because start can be blocking
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10L), () -> lta.start(true)); // for lwjgl3
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10L), lta.waitForStop()); // for lwjgl2
     }
 
     protected void test5FramesSimple() {
         SimpleTestApplication sta = new SimpleTestApplication();
-        app = sta;
-        app.enqueue(() -> sta.stopAfter(5L)); // As said, has to be done that way because start can be blocking
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10L), () -> app.start(true)); // for lwjgl3
+        sta.enqueue(() -> sta.stopAfter(5L)); // As said, has to be done that way because start can be blocking
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10L), () -> sta.start(true)); // for lwjgl3
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10L), sta.waitForStop()); // for lwjgl2
     }
 
@@ -109,6 +118,8 @@ public class TestContextCreation {
         set.setFrameRate(30); // Otherwise we can't control how fast the blue will pop up and down.
         set.setTitle("Blue Cube Functional Test");
         sta.setSettings(set);
+
+        app = sta; // Never know.
 
         sta.enqueue(() -> {
             Box b = new Box(1, 1, 1); // create cube shape
@@ -121,7 +132,7 @@ public class TestContextCreation {
         });
 
         sta.stopAfter(150L); // stop after 150 frames aka 5 seconds.
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10L), () -> sta.start(true)); // for lwjgl3
-        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10L), sta.waitForStop()); // for lwjgl2
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(20L), () -> sta.start(true)); // for lwjgl3
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(20L), sta.waitForStop()); // for lwjgl2
     }
 }
