@@ -63,10 +63,24 @@ public class TestContextCreationLWJGL3 extends TestContextCreation {
         super.test5FramesSimple();
     }
 
-    @Override
     @Test
     protected void testSimpleBlueCube10s() {
-        super.testSimpleBlueCube10s();
+        super.testSimpleBlueCube10s(false, false);
+    }
+
+    @Test
+    protected void testSimpleBlueCube10sDebug() {
+        super.testSimpleBlueCube10s(true, false);
+    }
+
+    @Test
+    protected void testSimpleBlueCube10sStats() {
+        super.testSimpleBlueCube10s(false, true);
+    }
+
+    @Test
+    protected void testSimpleBlueCube10sDebugStats() {
+        super.testSimpleBlueCube10s(true, true);
     }
 
     @Override

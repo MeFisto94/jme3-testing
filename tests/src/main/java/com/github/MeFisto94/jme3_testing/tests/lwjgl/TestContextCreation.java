@@ -2,6 +2,7 @@ package com.github.MeFisto94.jme3_testing.tests.lwjgl;
 
 import com.github.MeFisto94.jme3_testing.harness.LegacyTestApplication;
 import com.github.MeFisto94.jme3_testing.harness.SimpleTestApplication;
+import com.github.MeFisto94.jme3_testing.harness.TestingUtils;
 import com.jme3.app.Application;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -112,12 +113,16 @@ public abstract class TestContextCreation {
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10L), sta.waitForStop()); // for lwjgl2
     }
 
-    protected void testSimpleBlueCube10s() {
+    protected void testSimpleBlueCube10s(boolean debug, boolean showStats) {
         SimpleTestApplication sta = new SimpleTestApplication();
         AppSettings set = new AppSettings(true);
         set.setFrameRate(30); // Otherwise we can't control how fast the blue will pop up and down.
         set.setTitle("Blue Cube Functional Test");
+        set.putBoolean("GraphicsDebug", debug);
         sta.setSettings(set);
+
+        sta.setDisplayStatView(showStats);
+        sta.setDisplayFps(showStats);
 
         app = sta; // Never know.
 
@@ -134,5 +139,6 @@ public abstract class TestContextCreation {
         sta.stopAfter(150L); // stop after 150 frames aka 5 seconds.
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(20L), () -> sta.start(true)); // for lwjgl3
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(20L), sta.waitForStop()); // for lwjgl2
+        TestingUtils.assertNoException(sta);
     }
 }
