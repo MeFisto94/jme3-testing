@@ -42,7 +42,7 @@ public abstract class TestContextCreation {
                 }
             }
 
-            app.stop(true);
+            app.stop(false);
             app = null;
         }
     }
