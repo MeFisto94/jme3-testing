@@ -94,7 +94,6 @@ public class SimpleTestApplication extends SimpleApplication {
          * the application (to not run into the timeout) and hope the tester checks atomicThrowable to not have
          * a false positive!
          */
-        t.printStackTrace(); // Printing never hurts
         atomicThrowable.compareAndSet(null, t); // Don't overwrite an existing exception
         stop(false);
     }
