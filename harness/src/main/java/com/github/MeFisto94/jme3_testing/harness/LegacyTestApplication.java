@@ -9,27 +9,39 @@ import org.junit.jupiter.api.function.Executable;
 import org.opentest4j.AssertionFailedError;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 public class LegacyTestApplication extends LegacyApplication {
     protected Node rootNode;
     private static final Logger log = Logger.getLogger(LegacyTestApplication.class.getName());
+    AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();
 
     // State variables to monitor the application
     protected AtomicBoolean fullyLoaded = new AtomicBoolean();
     protected AtomicBoolean stopped = new AtomicBoolean();
 
-    public LegacyTestApplication(AppState... initialStates) {
+    /**
+     * This method has a special signature, because otherwise it is ambigous between STA(AppState...) and STA(), when
+     * no AppStates are passed.
+     * @param first
+     * @param initialStates
+     */
+    public LegacyTestApplication(AppState first, AppState... initialStates) {
         super(initialStates);
+        getStateManager().attach(first);
+        setPauseOnLostFocus(false);
+    }
+
+    public LegacyTestApplication() {
+        super(); // don't use this(new StateX()); because that can get out of sync
         setPauseOnLostFocus(false);
     }
 
     @Override
     public void start(JmeContext.Type contextType, boolean waitFor) {
-        Thread.setDefaultUncaughtExceptionHandler(
-            (t, e) -> {
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
                 if (e instanceof AssertionFailedError) {
-                    e.printStackTrace(); // @TODO: Rethrowing doesn't work here, but that's the only thing causing JUnit to fail
                     throw (AssertionFailedError)e;
                 } else {
                     handleError("[" + t.getName() + "]: " + e.getLocalizedMessage(), e);
@@ -48,12 +60,16 @@ public class LegacyTestApplication extends LegacyApplication {
 
     @Override
     public void handleError(String errMsg, Throwable t) {
-        //@TODO: Thanks to the custom exception handler, exceptions may pass the test.
         if (t instanceof AssertionFailedError) {
-            t.printStackTrace();
-            throw (AssertionFailedError)t; // @TODO: Rethrowing doesn't work here, but that's the only thing causing JUnit to fail
+            atomicThrowable.compareAndSet(null, t); // Don't overwrite an existing exception
         } else {
-            Assertions.fail(errMsg, t);
+            /* in case of lwjgl2, start() isn't blocking and as such the exception isn't delivered, that is why we stop
+             * the application (to not run into the timeout) and hope the tester checks atomicThrowable to not have
+             * a false positive!
+             */
+            t.printStackTrace(); // Printing never hurts
+            atomicThrowable.compareAndSet(null, t); // Don't overwrite an existing exception
+            stop(false);
         }
     }
 
@@ -131,5 +147,9 @@ public class LegacyTestApplication extends LegacyApplication {
                 }
             }
         };
+    }
+
+    public AtomicReference<Throwable> getAtomicThrowable() {
+        return atomicThrowable;
     }
 }
