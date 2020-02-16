@@ -2,6 +2,7 @@ package com.github.MeFisto94.jme3_testing.tests.lwjgl;
 
 import com.github.MeFisto94.jme3_testing.harness.LegacyTestApplication;
 import com.github.MeFisto94.jme3_testing.harness.SimpleTestApplication;
+import com.github.MeFisto94.jme3_testing.harness.TestingUtils;
 import com.jme3.app.Application;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -62,6 +63,7 @@ public abstract class TestOpenGLVersions {
         lta.enqueue(() -> lta.stopAfter(3L)); // lwjgl3, has to be enqueued, so the app is inited.
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), () -> lta.start(true)); // lwjgl3
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), lta.waitForStop()); // lwjgl2
+        TestingUtils.assertNoException(lta);
     }
 
     /**
@@ -80,6 +82,7 @@ public abstract class TestOpenGLVersions {
         lta.enqueue(() -> lta.stopAfter(3L)); // lwjgl3, has to be enqueued, so the app is inited.
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), () -> lta.start(true));
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), lta.waitForStop()); // lwjgl2
+        TestingUtils.assertNoException(lta);
     }
 
     /**
@@ -99,6 +102,7 @@ public abstract class TestOpenGLVersions {
         lta.enqueue(() -> lta.stopAfter(3L)); // lwjgl3, has to be enqueued, so the app is inited.
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), () -> lta.start(true));
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), lta.waitForStop()); // lwjgl2
+        TestingUtils.assertNoException(lta);
     }
 
     /**
@@ -117,6 +121,7 @@ public abstract class TestOpenGLVersions {
         lta.enqueue(() -> lta.stopAfter(3L)); // lwjgl3, has to be enqueued, so the app is inited.
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), () -> lta.start(true));
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), lta.waitForStop()); // lwjgl2
+        TestingUtils.assertNoException(lta);
     }
 
     /**
@@ -135,6 +140,7 @@ public abstract class TestOpenGLVersions {
         lta.enqueue(() -> lta.stopAfter(3L)); // lwjgl3, has to be enqueued, so the app is inited.
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), () -> lta.start(true));
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), lta.waitForStop()); // lwjgl2
+        TestingUtils.assertNoException(lta);
     }
 
     /**
@@ -153,6 +159,7 @@ public abstract class TestOpenGLVersions {
         lta.enqueue(() -> lta.stopAfter(3L)); // lwjgl3, has to be enqueued, so the app is inited.
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), () -> lta.start(true));
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), lta.waitForStop()); // lwjgl2
+        TestingUtils.assertNoException(lta);
     }
 
     /**
@@ -171,6 +178,7 @@ public abstract class TestOpenGLVersions {
         lta.enqueue(() -> lta.stopAfter(3L)); // lwjgl3, has to be enqueued, so the app is inited.
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), () -> lta.start(true));
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), lta.waitForStop()); // lwjgl2
+        TestingUtils.assertNoException(lta);
     }
 
     /**
@@ -189,6 +197,7 @@ public abstract class TestOpenGLVersions {
         lta.enqueue(() -> lta.stopAfter(3L)); // lwjgl3, has to be enqueued, so the app is inited.
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), () -> lta.start(true));
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), lta.waitForStop()); // lwjgl2
+        TestingUtils.assertNoException(lta);
     }
 
     /**
@@ -207,6 +216,7 @@ public abstract class TestOpenGLVersions {
         lta.enqueue(() -> lta.stopAfter(3L)); // lwjgl3, has to be enqueued, so the app is inited.
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), () -> lta.start(true));
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), lta.waitForStop()); // lwjgl2
+        TestingUtils.assertNoException(lta);
     }
 
     /**
@@ -225,6 +235,7 @@ public abstract class TestOpenGLVersions {
         lta.enqueue(() -> lta.stopAfter(3L)); // lwjgl3, has to be enqueued, so the app is inited.
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), () -> lta.start(true));
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), lta.waitForStop()); // lwjgl2
+        TestingUtils.assertNoException(lta);
     }
 
     /**
@@ -243,5 +254,6 @@ public abstract class TestOpenGLVersions {
         lta.enqueue(() -> lta.stopAfter(3L)); // lwjgl3, has to be enqueued, so the app is inited.
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), () -> lta.start(true));
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5L), lta.waitForStop()); // lwjgl2
+        TestingUtils.assertNoException(lta);
     }
 }
