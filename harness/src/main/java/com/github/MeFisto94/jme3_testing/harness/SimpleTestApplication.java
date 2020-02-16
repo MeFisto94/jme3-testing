@@ -1,20 +1,11 @@
 package com.github.MeFisto94.jme3_testing.harness;
 
-import com.jme3.app.DebugKeysAppState;
-import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppState;
-import com.jme3.app.state.ConstantVerifierState;
-import com.jme3.audio.AudioListenerState;
-import com.jme3.scene.Node;
 import com.jme3.system.JmeContext;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 import org.opentest4j.AssertionFailedError;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -33,15 +24,8 @@ public class SimpleTestApplication extends SimpleApplication {
     AtomicBoolean stopped = new AtomicBoolean();
     AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();
 
-    /**
-     * This method has a special signature, because otherwise it is ambigous between STA(AppState...) and STA(), when
-     * no AppStates are passed.
-     * @param first
-     * @param initialStates
-     */
-    public SimpleTestApplication(AppState first, AppState... initialStates) {
+    public SimpleTestApplication(AppState[] initialStates) {
         super(initialStates);
-        getStateManager().attach(first);
         setPauseOnLostFocus(false);
     }
 
