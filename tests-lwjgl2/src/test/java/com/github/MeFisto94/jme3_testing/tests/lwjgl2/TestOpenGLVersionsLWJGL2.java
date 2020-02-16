@@ -1,6 +1,7 @@
 package com.github.MeFisto94.jme3_testing.tests.lwjgl2;
 
 import com.github.MeFisto94.jme3_testing.tests.lwjgl.TestOpenGLVersions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -20,6 +21,10 @@ public class TestOpenGLVersionsLWJGL2 extends TestOpenGLVersions {
     }
 
     @Test
+    @Disabled
+    /**
+     * Disabled until PR 1252 is released.
+     */
     protected void testOpenGL31() {
         super.testOpenGL31(false);
     }
