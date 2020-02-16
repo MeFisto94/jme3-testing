@@ -51,8 +51,10 @@ public class SimpleTestApplication extends SimpleApplication {
 
     @Override
     public void stop(boolean waitFor) {
-        super.stop(waitFor);
-        stopped.set(true);
+        if (context != null) { // Prevent NPE
+            super.stop(waitFor);
+            stopped.set(true);
+        }
     }
 
     public AtomicBoolean getFullyLoaded() {

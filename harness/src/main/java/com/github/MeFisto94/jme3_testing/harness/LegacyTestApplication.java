@@ -54,8 +54,10 @@ public class LegacyTestApplication extends LegacyApplication {
 
     @Override
     public void stop(boolean waitFor) {
-        super.stop(waitFor);
-        stopped.set(true);
+        if (context != null) { // When we failed to init, that'd be a NPE.
+            super.stop(waitFor);
+            stopped.set(true);
+        }
     }
 
     @Override
