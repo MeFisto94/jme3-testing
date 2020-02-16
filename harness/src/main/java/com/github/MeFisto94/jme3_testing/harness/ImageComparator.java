@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class ImageComparator {
 
@@ -42,13 +44,12 @@ public class ImageComparator {
 
     /**
      * <b>Warning</b>: This method guarantees to return a buffer with {@link BufferedImage#TYPE_3BYTE_BGR} and otherwise Asserts
-     * @param file
+     * @param is
      * @return
      * @throws Exception
      */
-    public static byte[] loadReferenceImage(File file) throws Exception {
-        BufferedImage referenceImage;
-        referenceImage = ImageIO.read(file);
+    public static byte[] loadReferenceImage(InputStream is) throws Exception {
+        BufferedImage referenceImage = ImageIO.read(is);
         Assertions.assertEquals(BufferedImage.TYPE_3BYTE_BGR, referenceImage.getType());
 
         DataBuffer data = referenceImage.getData().getDataBuffer();
@@ -59,4 +60,11 @@ public class ImageComparator {
             throw new IllegalArgumentException("The loaded image was no DataBufferByte, I don't know what this means, though.");
         }
     }
+
+    public static byte[] loadReferenceImage(File file) throws Exception {
+        try(FileInputStream fis = new FileInputStream(file)) {
+            return loadReferenceImage(fis);
+        }
+    }
+
 }

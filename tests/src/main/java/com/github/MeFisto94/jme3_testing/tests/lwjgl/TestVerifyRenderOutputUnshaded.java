@@ -12,6 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.time.Duration;
 
@@ -53,9 +54,8 @@ public class TestVerifyRenderOutputUnshaded {
 
         app = sta; // Never know.
 
-        try {
-            File imgFile = new File(getClass().getResource("/samples/blue_cube_640x480.png").toURI());
-            byte[] refImage = ImageComparator.loadReferenceImage(imgFile);
+        try(InputStream is = TestVerifyRenderOutputUnshaded.class.getResourceAsStream("/samples/blue_cube_640x480.png")) {
+            byte[] refImage = ImageComparator.loadReferenceImage(is);
             sta.enqueue(() -> {
                 Box b = new Box(1, 1, 1); // create cube shape
                 Geometry geom = new Geometry("Box", b);  // create cube geometry from the shape
@@ -71,7 +71,7 @@ public class TestVerifyRenderOutputUnshaded {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            Assertions.assertDoesNotThrow(() -> ex);
+            Assertions.fail(ex);
         }
 
         //
