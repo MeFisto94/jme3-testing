@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 /**
  * This class is a bit uncommon: The Test contains the debug parameter, so that the base implementation can set
  * GraphicsDebug or not. <br />
+ * Currently Disabled until PR 1267 is released.
  */
+@Disabled
 public class TestOpenGLVersionsLWJGL3Debug extends TestOpenGLVersions {
 
     @Test
