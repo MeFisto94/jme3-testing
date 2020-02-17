@@ -10,6 +10,7 @@ import com.jme3.texture.Image;
 import com.jme3.util.BufferUtils;
 
 import java.nio.ByteBuffer;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class FrameGrabProcessor implements SceneProcessor {
@@ -19,9 +20,16 @@ public class FrameGrabProcessor implements SceneProcessor {
     ByteBuffer buf;
     int len;
     Consumer<byte[]> callback;
+    Optional<Image.Format> format;
 
     public FrameGrabProcessor(Consumer<byte[]> callback) {
         this.callback = callback;
+        this.format = Optional.empty();
+    }
+
+    public FrameGrabProcessor(Consumer<byte[]> callback, Image.Format format) {
+        this.callback = callback;
+        this.format = Optional.of(format);
     }
 
     @Override
@@ -34,9 +42,13 @@ public class FrameGrabProcessor implements SceneProcessor {
         reshape(vp, vp.getCamera().getWidth(), vp.getCamera().getHeight());
     }
 
+    protected int getComponents() {
+        return format.map(value -> value.getBitsPerPixel() / 8).orElse(3);
+    }
+
     @Override
     public void reshape(ViewPort vp, int w, int h) {
-        len = w * h * 3;
+        len = w * h * getComponents();
         buf = BufferUtils.createByteBuffer(len);
     }
 
@@ -57,7 +69,7 @@ public class FrameGrabProcessor implements SceneProcessor {
     public void postFrame(FrameBuffer out) {
         // When the glClearColor stays constant we don't really need alpha, which complicates image writing and loading
         // Also PNG is {@link BufferedImage#TYPE_3BYTE_BGR}, so we need to adopt
-        manager.getRenderer().readFrameBufferWithFormat(out, buf, Image.Format.BGR8);
+        manager.getRenderer().readFrameBufferWithFormat(out, buf, format.orElse(Image.Format.BGR8));
         byte[] a = new byte[buf.limit()];
         buf.get(a);
         buf.rewind();
