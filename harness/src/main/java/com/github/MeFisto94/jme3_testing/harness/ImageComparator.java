@@ -1,14 +1,14 @@
 package com.github.MeFisto94.jme3_testing.harness;
 
+import com.jme3.system.JmeSystem;
 import org.junit.jupiter.api.Assertions;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.ByteBuffer;
 
 public class ImageComparator {
 
@@ -38,7 +38,6 @@ public class ImageComparator {
     public static void assertSimilarityOver(byte[] A, byte[] B, double threshold) {
         Assertions.assertEquals(A.length, B.length, "Buffer Sizes not even matching");
         double sim = compare(A, B);
-        System.out.println(sim);
         Assertions.assertTrue(sim >= threshold, String.format("Image similarity of %f is below the threshold %f", sim, threshold));
     }
 
@@ -48,7 +47,7 @@ public class ImageComparator {
      * @return
      * @throws Exception
      */
-    public static byte[] loadReferenceImage(InputStream is) throws Exception {
+    public static byte[] loadReferenceImage(InputStream is) throws IllegalArgumentException, IOException {
         BufferedImage referenceImage = ImageIO.read(is);
         Assertions.assertEquals(BufferedImage.TYPE_3BYTE_BGR, referenceImage.getType());
 
@@ -62,8 +61,14 @@ public class ImageComparator {
     }
 
     public static byte[] loadReferenceImage(File file) throws Exception {
-        try(FileInputStream fis = new FileInputStream(file)) {
+        try (FileInputStream fis = new FileInputStream(file)) {
             return loadReferenceImage(fis);
+        }
+    }
+
+    public static void saveAsReferenceImage(String path, byte[] bArr, int width, int height) throws Exception {
+        try (FileOutputStream fos = new FileOutputStream(new File(path))) {
+            JmeSystem.writeImageFile(fos, "png", (ByteBuffer)(ByteBuffer.wrap(bArr).rewind()), width, height);
         }
     }
 
