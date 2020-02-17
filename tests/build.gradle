@@ -4,12 +4,13 @@ if (!hasProperty('mainClass')) {
 
 dependencies {
     // Implementation as we also expose the lwjgl classes as main dependency.
-    implementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
     implementation project(':harness')
 
-    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
-    testRuntime 'org.jmonkeyengine:jme3-desktop:3.3.0-beta1'
-    testRuntime 'org.jmonkeyengine:jme3-lwjgl:3.3.0-beta1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
+    implementation 'org.jmonkeyengine:jme3-core:3.3.0-beta1'
+    testRuntimeOnly 'org.jmonkeyengine:jme3-desktop:3.3.0-beta1'
+    testRuntimeOnly 'org.jmonkeyengine:jme3-lwjgl:3.3.0-beta1'
 }
 
 test {
