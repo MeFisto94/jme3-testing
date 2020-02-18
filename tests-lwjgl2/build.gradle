@@ -14,6 +14,6 @@ dependencies {
 }
 
 test {
-    //forkEvery = 1 // Restart the JVM for every Test to not have side effects.
+    forkEvery = 1 // Restart the JVM for every Test to not have side effects.
     useJUnitPlatform()
 }
