@@ -11,9 +11,7 @@ import com.jme3.system.AppSettings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 
-import java.io.File;
 import java.io.InputStream;
-import java.net.URL;
 import java.time.Duration;
 
 /**
@@ -45,7 +43,7 @@ public class TestVerifyRenderOutputUnshaded {
     }
 
     protected void testSimpleBlueCube() {
-        // Specifically leave out all AppStates, so the user doesn't accidentially move the mouse etc.
+        // Specifically leave out all AppStates, so the user doesn't accidentally move the mouse etc.
         SimpleTestApplication sta = new SimpleTestApplication(new AppState[]{});
         AppSettings set = new AppSettings(true);
         set.setFrameRate(30); // timebase for the timeouts and comparison speed.
