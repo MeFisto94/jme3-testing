@@ -8,9 +8,9 @@ dependencies {
     implementation project(':harness')
 
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
-    implementation 'org.jmonkeyengine:jme3-core:3.3.0-beta1'
-    testRuntimeOnly 'org.jmonkeyengine:jme3-desktop:3.3.0-beta1'
-    testRuntimeOnly 'org.jmonkeyengine:jme3-lwjgl:3.3.0-beta1'
+    implementation 'org.jmonkeyengine:jme3-core'
+    testRuntimeOnly 'org.jmonkeyengine:jme3-desktop'
+    testRuntimeOnly 'org.jmonkeyengine:jme3-lwjgl'
 }
 
 test {
