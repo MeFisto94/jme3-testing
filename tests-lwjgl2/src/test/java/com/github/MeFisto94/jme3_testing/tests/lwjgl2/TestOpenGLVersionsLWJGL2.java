@@ -15,16 +15,21 @@ public class TestOpenGLVersionsLWJGL2 extends TestOpenGLVersions {
         super.testOpenGL20(false);
     }
 
+    /**
+     * Disabled until setting specific compat GL versions is available (3.0 is no valid core version)
+     */
     @Test
+    @Disabled
     protected void testOpenGL30() {
         super.testOpenGL30(false);
     }
 
+
+    /**
+     * Disabled until setting specific compat GL versions is available (3.1 is no valid core version)
+     */
     @Test
     @Disabled
-    /**
-     * Disabled until PR 1252 is released.
-     */
     protected void testOpenGL31() {
         super.testOpenGL31(false);
     }

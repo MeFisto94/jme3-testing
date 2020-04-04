@@ -8,9 +8,7 @@ import org.junit.jupiter.api.Test;
  * This class is a bit uncommon: The Test contains the debug parameter, so that the base implementation can set
  * GraphicsDebug or not. <br />
  * Still we want to have the @Override annotation, even though we don't pass the parameter
- * Currently Disabled until PR 1267 is released.
  */
-@Disabled
 public class TestOpenGLVersionsLWJGL2Debug extends TestOpenGLVersions {
 
     @Test
@@ -18,16 +16,21 @@ public class TestOpenGLVersionsLWJGL2Debug extends TestOpenGLVersions {
         super.testOpenGL20(true);
     }
 
+    /**
+     * Disabled until setting specific compat GL versions is available (3.0 is no valid core version)
+     */
     @Test
+    @Disabled
     protected void testOpenGL30() {
         super.testOpenGL30(true);
     }
 
+
+    /**
+     * Disabled until setting specific compat GL versions is available (3.1 is no valid core version)
+     */
     @Test
     @Disabled
-    /**
-     * Disabled until PR 1252 is released.
-     */
     protected void testOpenGL31() {
         super.testOpenGL31(true);
     }

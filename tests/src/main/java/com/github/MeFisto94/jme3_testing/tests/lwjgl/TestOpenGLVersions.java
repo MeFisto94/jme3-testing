@@ -75,6 +75,7 @@ public abstract class TestOpenGLVersions {
         LegacyTestApplication lta = new LegacyTestApplication();
         AppSettings set = new AppSettings(true);
         set.setTitle("OpenGL 3.0 Test");
+        // @TODO: Core Profiles start at 3.2, so that needs implementing first.
         set.setRenderer(AppSettings.LWJGL_OPENGL30);
         set.putBoolean("GraphicsDebug", debug);
         lta.setSettings(set);
@@ -95,7 +96,7 @@ public abstract class TestOpenGLVersions {
         AppSettings set = new AppSettings(true);
         set.setTitle("OpenGL 3.1 Test");
         set.putBoolean("GraphicsDebug", debug);
-        // @TODO: Wait for PR to be merged
+        // @TODO: Wait for PR to be merged. Also: Core Profiles start at 3.2, so that needs implementing first
         set.setRenderer(AppSettings.LWJGL_OPENGL30);
         lta.setSettings(set);
         app = lta;
