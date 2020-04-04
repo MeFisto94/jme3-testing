@@ -72,10 +72,6 @@ public class TestContextCreationLWJGL2 extends TestContextCreation {
     }
 
     @Test
-    @Disabled
-    /**
-     * Disabled until #1276 is merged. Expected Failure
-     */
     protected void testSimpleBlueCube10sDebugStats() {
         super.testSimpleBlueCube10s(true, true);
     }
