@@ -2,6 +2,6 @@ if (!hasProperty('mainClass')) {
     ext.mainClass = ''
 }
 dependencies {
-    implementation 'org.jmonkeyengine:jme3-core:3.3.0-beta1'
+    implementation 'org.jmonkeyengine:jme3-core'
     implementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
 }
